@@ -1,0 +1,55 @@
+---
+title: "excelandpca"
+author: "Rushikesh"
+date: "2024-01-28"
+output: word_document
+---
+
+```{r echo = TRUE}
+#importing excel file
+library(readxl)
+dir()
+data1 = read_excel("Lab1.xlsx")
+data1
+
+age = c(21,23,24)
+gender = c("male","female","male")
+weight = c(98,85,63)
+mydata = data.frame(age,gender,weight)
+mydata
+
+#exporting data
+write.table(mydata,"mydata.txt",sep = "\t")
+write.csv(mydata,"mydata.csv")
+dir()
+
+#pca
+d = iris
+data = iris[,1:4]
+data
+
+data.scaled = scale(data,center = TRUE,scale = TRUE)
+head(data,5)
+head(data.scaled,5)
+res.cor = cor(data.scaled);res.cor
+res.eigen = eigen(res.cor);res.eigen
+
+eigv = res.eigen$vectors;eigv
+eig = res.eigen$values;eig
+data_new = data.scaled%*%eigv;data_new
+
+
+#variance
+var1 = eig[1]/sum(eig);var1 
+var2 = eig[2]/sum(eig);var2 
+var3 = eig[3]/sum(eig);var3 
+var4 = eig[4]/sum(eig);var4 
+
+data_new1 = data.scaled %*% eigv[,1:2];data_new1;
+head(data_new1)
+
+#using built in function
+iris.pca = prcomp(iris[,c(1:4)],center = TRUE,scale. = TRUE,rank. = 2)
+summary(iris.pca)
+
+```
